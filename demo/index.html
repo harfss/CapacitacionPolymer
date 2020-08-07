@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>usuarios-element demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../usuarios-element.html">
+    <link rel="import" href="../bancos-element.html">
+
+
+    <custom-style>
+      <style is="custom-style" include="demo-pages-shared-styles">
+      </style>
+    </custom-style>
+  </head>
+  <body>
+    <div class="vertical-section-container centered">
+      <h3>== B A N C O S ==</h3>
+      <demo-snippet>
+        <template>
+          <bancos-element></bancos-element>
+          <usuarios-element></usuarios-element>
+          <script>
+            
+            const goToData = async()=>{
+              const dataRaw = await fetch('http://demo6292426.mockable.io/accounts');
+              const data = await dataRaw.json();
+              return Promise.resolve(data);
+            }
+            goToData().then(data=>{
+                const elementoBancos = document.querySelector('bancos-element');
+                console.log(elementoBancos);
+                console.log(data);
+                const elementoUsuarios = document.querySelector('usuarios-element');
+                const infoCuentas = data.reduce((info, cuenta)=>{
+                    let bancoTmp =  info.bancos.find(banco => banco.nombre === cuenta.company)
+                     if(bancoTmp){
+                        bancoTmp.monto = parseFloat(bancoTmp.monto) + parseFloat(cuenta.balance);
+                        bancoTmp.count = bancoTmp.count + 1;
+                     }else{
+                        bancoTmp = new Object();
+                        bancoTmp.nombre = cuenta.company;
+                        bancoTmp.monto = parseFloat(cuenta.balance);
+                        bancoTmp.count = 1;
+                        info.bancos.push(bancoTmp);
+                     }
+                     let usuarioTmp = new Object;
+                     usuarioTmp.nombreCompleto = cuenta.name.first + ' ' + cuenta.name.last;
+                     usuarioTmp.correo = cuenta.email;
+                     usuarioTmp.monto = cuenta.balance;
+                     info.usuarios.push(usuarioTmp);
+                     return info;
+                }, {bancos:[], usuarios:[]});
+
+                
+                elementoBancos.data = infoCuentas.bancos;
+                elementoUsuarios.data = infoCuentas.usuarios;
+            });
+
+          </script>
+        </template>
+      </demo-snippet>
+    </div>
+  </body>
+</html>

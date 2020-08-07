@@ -1,0 +1,43 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="usuarios-element">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>[[prop1]]!</h2>
+    <template is="dom-repeat" items="{{data}}" as=user>
+      <p>{{user.nombreCompleto}} - {{user.correo}} - {{user.monto}}</p>
+    </template>
+  </template>
+
+  <script>
+    /**
+     * `usuarios-element`
+     * admon de usuarios
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class UsuariosElement extends Polymer.Element {
+      static get is() { return 'usuarios-element'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'usuarios-element'
+          },
+          data: {
+            type: Array,
+            value: ()=>[]
+          }
+        };
+      }
+    }
+
+    window.customElements.define(UsuariosElement.is, UsuariosElement);
+  </script>
+</dom-module>

@@ -1,0 +1,39 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="bancos-element">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>[[prop1]]!</h2>
+    <template is="dom-repeat" items="{{data}}" as=bank>
+      <p>{{bank.nombre}} - {{bank.monto}} - {{bank.count}}</p>
+    </template>
+  </template>
+
+  <script>
+    /**
+     * `bancos-element`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class BancosElement extends Polymer.Element {
+      static get is() { return 'bancos-element'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'bancos-element'
+          }
+        };
+      }
+    }
+
+    window.customElements.define(BancosElement.is, BancosElement);
+  </script>
+</dom-module>
